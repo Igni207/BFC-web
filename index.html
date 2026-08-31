@@ -1,42 +1,15 @@
 <!DOCTYPE html>
-<!-- saved from url=(0058)file:///C:/Users/juani/Downloads/based-fighting-cup_2.html -->
-<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="es">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Based Fighting Cup — Tercera Edición</title>
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-<link href="./Based Fighting Cup — Tercera Edición_files/css2" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <!-- Firebase (para que la tabla se sincronice entre navegadores/dispositivos en tiempo real) -->
-<script src="./Based Fighting Cup — Tercera Edición_files/firebase-app-compat.js.descargar"></script>
-<script src="./Based Fighting Cup — Tercera Edición_files/firebase-firestore-compat.js.descargar"></script>
-
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyAx-zBmFyflh8ORoClcozwIahrx222Nipc",
-    authDomain: "based-fighting-cup.firebaseapp.com",
-    projectId: "based-fighting-cup",
-    storageBucket: "based-fighting-cup.firebasestorage.app",
-    messagingSenderId: "539560995135",
-    appId: "1:539560995135:web:e49e9456db62e3fe278b8a",
-    measurementId: "G-2R66N2MLK0"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
-
-
-
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
 <style>
   :root{
     --bg:#0a0a0e;
@@ -151,7 +124,7 @@
 
   .nav-eyebrow{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.35em;color:var(--dim);text-transform:uppercase;margin-bottom:1.6rem;}
   .nav-grid{display:grid;grid-template-columns:repeat(2, minmax(150px,1fr));gap:1rem;width:100%;max-width:480px;}
-  .nav-btn{font-family:var(--font-display);font-size:1.4rem;letter-spacing:.03em;color:var(--bg);border:none;padding:1.3rem .8rem;
+  .nav-btn{font-family:var(--font-display);font-size:1.3rem;letter-spacing:.03em;color:var(--bg);border:none;padding:1.1rem .8rem;
     cursor:pointer;transition:transform .15s ease, filter .2s ease;}
   .nav-btn:hover{transform:translateY(-3px);filter:brightness(1.1);}
   .nav-btn:focus-visible{outline:3px solid var(--white);outline-offset:2px;}
@@ -159,6 +132,9 @@
   .nav-btn--juegos{background:var(--yellow);}
   .nav-btn--redes{background:var(--cyan);}
   .nav-btn--tablas{background:var(--white);}
+  .nav-btn--brackets{grid-column:1/-1;background:linear-gradient(90deg, var(--red), var(--gold));color:var(--white);
+    font-size:1.15rem;letter-spacing:.05em;}
+  .nav-btn--brackets{background:var(--gold);grid-column:1 / -1;}
 
   /* ---------- generic section head ---------- */
   .section{min-height:100vh;padding:9vh 6vw 10vh;border-top:1px solid var(--line);scroll-margin-top:3rem;}
@@ -194,6 +170,85 @@
   .game-name{font-family:var(--font-display);font-size:1.45rem;margin:.5rem 0 .3rem;letter-spacing:.01em;}
   .game-tag{font-family:var(--font-sub);font-size:.88rem;color:var(--dim);margin-bottom:1rem;}
   .game-cta{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.2em;color:var(--accent, var(--red));text-transform:uppercase;}
+
+  /* ---------- BRACKETS ---------- */
+  .bracket-picker{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;margin-bottom:2.4rem;}
+  .bracket-pick-btn{font-family:var(--font-display);font-size:1rem;letter-spacing:.02em;color:var(--white);
+    background:var(--bg-panel);border:1px solid var(--line);padding:.8rem 1.3rem;cursor:pointer;transition:border-color .2s, background .2s;}
+  .bracket-pick-btn.active{border-color:var(--accent, var(--yellow));background:var(--bg-panel-2);color:var(--accent, var(--yellow));}
+  .bracket-pick-btn:hover{border-color:var(--white);}
+
+  .bracket-layout{display:grid;grid-template-columns:1fr;gap:1.6rem;max-width:1100px;margin:0 auto;}
+  @media (min-width:900px){ .bracket-layout{grid-template-columns:2.2fr 1fr;align-items:start;} }
+
+  .bracket-main{display:flex;flex-direction:column;gap:1.6rem;}
+  .bracket-round-card{background:var(--bg-panel);border:1px solid var(--line);padding:1.3rem 1.4rem;}
+  .bracket-round-title{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:1rem;}
+  .bracket-round-sub{font-family:var(--font-sub);font-size:.85rem;color:var(--dim);margin:-.6rem 0 1rem;}
+
+  .match-row{display:flex;align-items:center;justify-content:space-between;gap:.8rem;padding:.7rem .8rem;
+    background:var(--bg-panel-2);border:1px solid var(--line);margin-bottom:.5rem;flex-wrap:wrap;}
+  .match-row.decided{opacity:.7;}
+  .match-players{display:flex;align-items:center;gap:.6rem;font-family:var(--font-sub);font-size:.95rem;flex:1;min-width:200px;}
+  .match-players b{font-family:var(--font-display);font-weight:400;}
+  .match-players .winner-name{color:var(--yellow);}
+  .match-vs-mini{font-family:var(--font-mono);font-size:.65rem;color:var(--dim);}
+  .match-actions{display:flex;gap:.4rem;flex-wrap:wrap;}
+  .match-actions button{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;
+    background:var(--bg);border:1px solid var(--line);color:var(--white);padding:.4rem .7rem;cursor:pointer;transition:border-color .2s;}
+  .match-actions button:hover{border-color:var(--yellow);}
+  .match-actions button.draw-btn{border-color:var(--cyan);color:var(--cyan);}
+  .match-tag{font-family:var(--font-mono);font-size:.62rem;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;}
+
+  .tie-alert{background:rgba(232,53,43,.1);border:1px solid var(--red);padding:.8rem 1rem;margin-bottom:.8rem;font-family:var(--font-sub);font-size:.9rem;}
+  .tie-alert button{margin-top:.5rem;}
+
+  .bracket-side{display:flex;flex-direction:column;gap:1rem;position:sticky;top:5rem;}
+  .side-panel{background:var(--bg-panel);border:1px solid var(--line);padding:1.2rem 1.3rem;}
+  .side-panel h4{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:.8rem;}
+  .standing-row{display:flex;justify-content:space-between;font-family:var(--font-sub);font-size:.9rem;padding:.35rem 0;
+    border-bottom:1px solid var(--line);}
+  .standing-row b{font-family:var(--font-mono);color:var(--yellow);}
+  .side-actions{display:flex;flex-direction:column;gap:.6rem;}
+  .side-actions button{width:100%;}
+  .placeholder-note{font-family:var(--font-sub);color:var(--dim);text-align:center;max-width:32em;margin:0 auto;line-height:1.6;}
+
+  /* ---------- VS OVERLAY ---------- */
+  .vs-overlay{position:fixed;inset:0;z-index:1200;background:#000;display:flex;align-items:center;justify-content:center;
+    opacity:0;visibility:hidden;transition:opacity .3s ease, visibility .3s ease;overflow:hidden;}
+  .vs-overlay.open{opacity:1;visibility:visible;}
+  .vs-bg-side{position:absolute;top:0;bottom:0;width:55%;filter:blur(0px);}
+  .vs-bg-left{left:0;background:radial-gradient(ellipse at 0% 50%, var(--p1c,var(--red)) 0%, transparent 65%);}
+  .vs-bg-right{right:0;background:radial-gradient(ellipse at 100% 50%, var(--p2c,var(--cyan)) 0%, transparent 65%);}
+
+  .vs-figure{position:absolute;top:50%;width:min(34vw, 260px);height:min(60vh, 460px);transform:translateY(-50%);
+    border-radius:38% 38% 30% 30% / 45% 45% 20% 20%;opacity:0;transition:transform 1s cubic-bezier(.2,.9,.15,1), opacity .5s ease;
+    box-shadow:0 0 60px 10px var(--figc, var(--red)), inset 0 0 40px rgba(255,255,255,.15);
+    background:linear-gradient(160deg, var(--figc, var(--red)), #000 120%);}
+  .vs-figure.left{left:-30vw;}
+  .vs-figure.right{right:-30vw;}
+  .vs-overlay.reveal .vs-figure.left{left:6%;opacity:1;}
+  .vs-overlay.reveal .vs-figure.right{right:6%;opacity:1;}
+
+  .vs-name{position:absolute;bottom:8%;font-family:var(--font-display);font-size:clamp(1.3rem,4vw,2.2rem);color:var(--white);
+    text-shadow:0 0 20px rgba(0,0,0,.8);opacity:0;transition:opacity .4s ease .5s;}
+  .vs-name.left{left:6%;text-align:left;}
+  .vs-name.right{right:6%;text-align:right;}
+  .vs-overlay.reveal .vs-name{opacity:1;}
+
+  .vs-center{position:relative;z-index:2;font-family:var(--font-display);font-size:clamp(2.6rem,9vw,5rem);color:var(--white);
+    letter-spacing:.05em;opacity:0;transform:scale(1.6);transition:opacity .3s ease .7s, transform .3s ease .7s;
+    text-shadow:0 0 30px var(--red), 0 0 60px var(--cyan);}
+  .vs-overlay.reveal .vs-center{opacity:1;transform:scale(1);}
+
+  .vs-pick-row{position:absolute;bottom:4%;left:50%;transform:translateX(-50%);display:flex;gap:1rem;opacity:0;
+    transition:opacity .4s ease 1s;z-index:3;}
+  .vs-overlay.reveal .vs-pick-row{opacity:1;}
+  .vs-pick-row button{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;
+    background:var(--white);color:var(--bg);border:none;padding:.7rem 1.2rem;cursor:pointer;}
+  .vs-pick-row button.draw{background:var(--dim);}
+  .vs-skip{position:absolute;top:1.4rem;right:1.4rem;z-index:4;background:none;border:1px solid rgba(255,255,255,.3);color:#fff;
+    font-family:var(--font-mono);font-size:.7rem;padding:.5rem .8rem;cursor:pointer;}
 
   /* ---------- MODAL ---------- */
   .modal-overlay{position:fixed;inset:0;z-index:1100;background:rgba(5,5,7,.85);backdrop-filter:blur(4px);display:flex;
@@ -300,6 +355,14 @@
   .sync-ok{max-width:1000px;margin:0 auto 1rem;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;color:var(--dim);text-align:center;}
   .sync-ok.live{color:var(--cyan);}
 
+  .final-ranking{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.7rem;margin:1rem 0;}
+  .fr-chip{background:var(--bg-panel-2);border:1px solid var(--line);padding:.8rem;text-align:center;}
+  .fr-chip b{display:block;font-family:var(--font-display);font-size:1.1rem;}
+  .fr-chip span{font-family:var(--font-mono);font-size:.65rem;color:var(--dim);}
+  .vs-figure img{width:100%;height:100%;object-fit:contain;position:relative;z-index:1;}
+  .bracket-pick-btn[disabled]{opacity:.4;cursor:not-allowed;}
+  .bracket-pick-btn[disabled]:hover{border-color:var(--line);}
+
   footer{text-align:center;padding:3rem 1rem;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.15em;color:var(--line);}
 
   @media (max-width:600px){
@@ -312,25 +375,25 @@
   }
 </style>
 </head>
-<body class="">
+<body class="lock">
 
   <div class="scanlines"></div>
   <div class="vignette"></div>
 
   <!-- ================= INTRO ================= -->
-  <div class="intro fade-out" id="intro" style="display: none;">
-    <div class="intro-letters spread" id="introLetters">
+  <div class="intro" id="intro">
+    <div class="intro-letters" id="introLetters">
       <div class="letter-group">
         <span class="letter letter-b">B</span>
-        <div class="word-col word-b" id="wordB"><span class="vchar">A</span><span class="vchar">S</span><span class="vchar">E</span><span class="vchar">D</span></div>
+        <div class="word-col word-b" id="wordB"></div>
       </div>
       <div class="letter-group">
         <span class="letter letter-f">F</span>
-        <div class="word-col word-f" id="wordF"><span class="vchar">I</span><span class="vchar">G</span><span class="vchar">H</span><span class="vchar">T</span><span class="vchar">I</span><span class="vchar">N</span><span class="vchar">G</span></div>
+        <div class="word-col word-f" id="wordF"></div>
       </div>
       <div class="letter-group">
         <span class="letter letter-c">C</span>
-        <div class="word-col word-c" id="wordC"><span class="vchar">U</span><span class="vchar">P</span></div>
+        <div class="word-col word-c" id="wordC"></div>
       </div>
     </div>
     <button class="intro-skip" id="skipIntro">SALTAR ▶</button>
@@ -338,21 +401,23 @@
 
   <!-- ================= STICKY NAV ================= -->
   <nav class="topnav" id="topnav">
-    <a href="file:///C:/Users/juani/Downloads/based-fighting-cup_2.html#jugadores">Jugadores</a>
-    <a href="file:///C:/Users/juani/Downloads/based-fighting-cup_2.html#juegos">Juegos</a>
-    <a href="file:///C:/Users/juani/Downloads/based-fighting-cup_2.html#redes">Redes</a>
-    <a href="file:///C:/Users/juani/Downloads/based-fighting-cup_2.html#tablas">Tablas</a>
+    <a href="#jugadores">Jugadores</a>
+    <a href="#juegos">Juegos</a>
+    <a href="#brackets">Brackets</a>
+    <a href="#redes">Redes</a>
+    <a href="#tablas">Tablas</a>
+    <a href="#brackets">Brackets</a>
   </nav>
 
   <!-- ================= MAIN ================= -->
-  <main class="main reveal" id="main">
+  <main class="main hidden-init" id="main">
 
     <section class="ring-section" id="ring">
       <div class="ring-frame" id="ringFrame">
         <span class="ring-post tl"></span><span class="ring-post tr"></span>
         <span class="ring-post bl"></span><span class="ring-post br"></span>
 
-        <div class="ring-stage nav-active" id="ringStage">
+        <div class="ring-stage" id="ringStage">
           <div class="ring-title-stage">
             <p class="ring-eyebrow">Based Fighting Cup</p>
             <h1 class="ring-title">TERCERA<span>EDICIÓN</span></h1>
@@ -367,8 +432,10 @@
               <button class="nav-btn nav-btn--juegos" data-target="#juegos">Juegos</button>
               <button class="nav-btn nav-btn--redes" data-target="#redes">Redes</button>
               <button class="nav-btn nav-btn--tablas" data-target="#tablas">Tablas</button>
+              <button class="nav-btn nav-btn--brackets" data-target="#brackets">BFC3 · Brackets</button>
+              <button class="nav-btn nav-btn--brackets" data-target="#brackets">BFC3 · Brackets</button>
             </div>
-          <span class="glitch-word" style="right: 2.03274%; top: 30.1163%; color: var(--white);">Kacha</span></div>
+          </div>
         </div>
       </div>
     </section>
@@ -380,47 +447,7 @@
         <h2 class="section-title">Jugadores</h2>
         <p class="section-desc">Los 10 competidores de esta edición.</p>
       </div>
-      <div class="roster-grid" id="rosterGrid"><div class="roster-card">
-      <div class="roster-num">#01</div>
-      <div class="roster-name">Rojo</div>
-      <div class="roster-tag">HaxBall: Lomas Turbas</div>
-    </div><div class="roster-card">
-      <div class="roster-num">#02</div>
-      <div class="roster-name">Milanesa</div>
-      <div class="roster-tag">HaxBall: Deportivo Vergatieso</div>
-    </div><div class="roster-card">
-      <div class="roster-num">#03</div>
-      <div class="roster-name">Croc</div>
-      <div class="roster-tag">HaxBall: Unión Glande</div>
-    </div><div class="roster-card">
-      <div class="roster-num">#04</div>
-      <div class="roster-name">Mena</div>
-      <div class="roster-tag">HaxBall: Sementales FC</div>
-    </div><div class="roster-card">
-      <div class="roster-num">#05</div>
-      <div class="roster-name">Kacha</div>
-      <div class="roster-tag">HaxBall: Sementales FC</div>
-    </div><div class="roster-card">
-      <div class="roster-num">#06</div>
-      <div class="roster-name">Fexx</div>
-      <div class="roster-tag">HaxBall: Pajertan Vergrado</div>
-    </div><div class="roster-card">
-      <div class="roster-num">#07</div>
-      <div class="roster-name">Santy</div>
-      <div class="roster-tag">HaxBall: Pajertan Vergrado</div>
-    </div><div class="roster-card">
-      <div class="roster-num">#08</div>
-      <div class="roster-name">Sosa</div>
-      <div class="roster-tag">HaxBall: Lomas Turbas</div>
-    </div><div class="roster-card">
-      <div class="roster-num">#09</div>
-      <div class="roster-name">Chata</div>
-      <div class="roster-tag">HaxBall: Unión Glande</div>
-    </div><div class="roster-card">
-      <div class="roster-num">#10</div>
-      <div class="roster-name">Gonzi</div>
-      <div class="roster-tag">HaxBall: Deportivo Vergatieso</div>
-    </div></div>
+      <div class="roster-grid" id="rosterGrid"></div>
     </section>
 
     <!-- ================= JUEGOS ================= -->
@@ -430,32 +457,18 @@
         <h2 class="section-title">Juegos Confirmados</h2>
         <p class="section-desc">Tocá cada juego para ver cómo funciona: formato, rondas y sistema de puntos.</p>
       </div>
-      <div class="games-grid" id="gamesGrid"><button class="game-card" style="--accent: var(--red);">
-      <div class="game-num">01</div>
-      <div class="game-name">Dragon Ball Sparking Zero</div>
-      <div class="game-tag">Equipos de personajes · Sistema RedRank</div>
-      <div class="game-cta">Ver reglas →</div>
-    </button><button class="game-card" style="--accent: var(--cyan);">
-      <div class="game-num">02</div>
-      <div class="game-name">FC26</div>
-      <div class="game-tag">1v1 · Sistema RedRank con empates</div>
-      <div class="game-cta">Ver reglas →</div>
-    </button><button class="game-card" style="--accent: var(--yellow);">
-      <div class="game-num">03</div>
-      <div class="game-name">Gang Beast</div>
-      <div class="game-tag">Duelos + grupos de 4 · Estrellas</div>
-      <div class="game-cta">Ver reglas →</div>
-    </button><button class="game-card" style="--accent: var(--red);">
-      <div class="game-num">04</div>
-      <div class="game-name">Brawlhalla</div>
-      <div class="game-tag">1v1 · 3 personajes = 3 vidas</div>
-      <div class="game-cta">Ver reglas →</div>
-    </button><button class="game-card" style="--accent: var(--cyan);">
-      <div class="game-num">05</div>
-      <div class="game-name">HaxBall</div>
-      <div class="game-tag">El único juego por equipos</div>
-      <div class="game-cta">Ver reglas →</div>
-    </button></div>
+      <div class="games-grid" id="gamesGrid"></div>
+    </section>
+
+    <!-- ================= BRACKETS ================= -->
+    <section class="section" id="brackets">
+      <div class="section-head">
+        <p class="section-eyebrow">BFC3 · Tercera Edición</p>
+        <h2 class="section-title">Brackets</h2>
+        <p class="section-desc">Sorteo, cruces y resultados en vivo de cada juego. Solo el organizador puede cargar resultados — el resto ve todo actualizado al instante.</p>
+      </div>
+      <div class="bracket-picker" id="bracketPicker"></div>
+      <div id="bracketView"></div>
     </section>
 
     <!-- ================= REDES ================= -->
@@ -464,7 +477,7 @@
         <p class="section-eyebrow">Seguí el torneo</p>
         <h2 class="section-title">Redes</h2>
       </div>
-      <div class="redes-grid" id="redesGrid"><a class="red-card" href="https://www.youtube.com/@PibesBasados" target="_blank" rel="noopener"><div class="red-name">YouTube</div><div class="red-sub">@PibesBasados</div></a></div>
+      <div class="redes-grid" id="redesGrid"></div>
     </section>
 
     <!-- ================= TABLAS ================= -->
@@ -475,13 +488,13 @@
         <p class="section-desc">Puntaje acumulado de todo el torneo, incluyendo HaxBall.</p>
       </div>
 
-      <div class="sync-banner show" id="syncBanner">
+      <div class="sync-banner" id="syncBanner">
         ⚠️ Firebase no está conectado todavía — la tabla se está guardando solo en este navegador.
         Completá <code>FIREBASE_CONFIG</code> en el HTML para que se sincronice entre todos. Ver instrucciones del organizador.
       </div>
-      <p class="sync-ok" id="syncStatus">○ Guardado solo en este navegador</p>
+      <p class="sync-ok" id="syncStatus"></p>
 
-      <div class="edition-tabs" id="editionTabs"><button class="edition-tab active">3ra Edición (actual)</button><button class="edition-tab">2da Edición (histórico)</button></div>
+      <div class="edition-tabs" id="editionTabs"></div>
 
       <div class="organizer-bar">
         <span class="organizer-status" id="organizerStatus">Modo espectador</span>
@@ -491,9 +504,9 @@
       <div class="tabla-wrap">
         <table class="scoretable" id="scoreTable">
           <thead>
-            <tr id="scoreHead"><th>Jugador</th><th class="col-total">Total</th><th>DB</th><th>FC26</th><th>GB</th><th>BH</th><th>HaxBall</th></tr>
+            <tr id="scoreHead"></tr>
           </thead>
-          <tbody id="scoreBody"><tr><td>Rojo</td><td class="col-total">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>Milanesa</td><td class="col-total">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>Croc</td><td class="col-total">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>Mena</td><td class="col-total">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>Kacha</td><td class="col-total">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>Fexx</td><td class="col-total">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>Santy</td><td class="col-total">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>Sosa</td><td class="col-total">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>Chata</td><td class="col-total">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>Gonzi</td><td class="col-total">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></tbody>
+          <tbody id="scoreBody"></tbody>
         </table>
       </div>
       <p class="table-note" id="tableNote"></p>
@@ -1174,14 +1187,451 @@
     }
     renderOrganizerUI();
     renderBody();
+    if (typeof renderBracketView === 'function' && currentBracketGame) renderBracketView();
   });
 
   renderEditionTabs();
   renderHead();
   renderOrganizerUI();
   renderBody();
+
+  // =========================================================
+  // BRACKETS — sorteo, cruces y resultados en vivo (RedRank)
+  // Cubre Dragon Ball, FC26 y Brawlhalla (mismo sistema).
+  // Gang Beast y HaxBall quedan como "Próximamente" por ahora,
+  // tienen una lógica muy distinta (estrellas / ida-vuelta por equipos).
+  // =========================================================
+  const REDRANK_GAMES = [
+    { id:'db', label:'Dragon Ball Sparking Zero', hasDraw:false },
+    { id:'fc26', label:'FC26', hasDraw:true },
+    { id:'brawlhalla', label:'Brawlhalla', hasDraw:true }
+  ];
+  const SOON_GAMES = [
+    { id:'gangbeast', label:'Gang Beast' },
+    { id:'haxball', label:'HaxBall' }
+  ];
+
+  // Colores de cada jugador para el fondo/iluminación del VS.
+  const PLAYER_COLORS = {
+    Kacha:'#f2efe6', Mena:'#b026ff', Rojo:'#e8352b', Milanesa:'#2e6bf0', Croc:'#3fd1e0',
+    Sosa:'#f2a83c', Chata:'#141c5c', Gonzi:'#39ff6a', Santy:'#b98cf2', Fexx:'#a8552b'
+  };
+  // Cuando tengas las siluetas PNG (sin fondo), agregalas acá, ej: Kacha:'assets/siluetas/kacha.png'
+  const PLAYER_SILHOUETTES = {};
+
+  const BRACKET_COLLECTION = 'bfc_brackets';
+  const BRACKET_LOCAL_KEY = 'bfc_brackets_local';
+
+  function emptyBracketState(){
+    return {
+      stage:'r1', r1:null, bestLoser:null, groupA:null, groupB:null,
+      r2a:null, r2bSemis:null, r2bFinal:null,
+      place56:{ p5:null, p6:null },
+      r3semis:null, r3final:null, r3third:null,
+      applied:false, history:[]
+    };
+  }
+  function loadBracketsLocal(){ try{ return JSON.parse(localStorage.getItem(BRACKET_LOCAL_KEY) || '{}'); }catch(e){ return {}; } }
+  function saveBracketsLocal(all){ try{ localStorage.setItem(BRACKET_LOCAL_KEY, JSON.stringify(all)); }catch(e){} }
+
+  let bracketsLocalCache = firebaseReady ? {} : loadBracketsLocal();
+  let brackets = {};
+  let currentBracketGame = null;
+
+  function ensureBracket(gameId){
+    if (!brackets[gameId]){
+      brackets[gameId] = bracketsLocalCache[gameId]
+        ? JSON.parse(JSON.stringify(bracketsLocalCache[gameId]))
+        : emptyBracketState();
+    }
+  }
+
+  if (firebaseReady){
+    REDRANK_GAMES.forEach(g => {
+      db.collection(BRACKET_COLLECTION).doc(g.id).onSnapshot(snap => {
+        brackets[g.id] = snap.exists ? snap.data() : emptyBracketState();
+        if (currentBracketGame === g.id) renderBracketView();
+      }, err => console.error('Error escuchando bracket de', g.id, err));
+    });
+  }
+
+  function saveBracket(gameId){
+    if (firebaseReady){
+      db.collection(BRACKET_COLLECTION).doc(gameId).set(brackets[gameId]).catch(err => console.error('Error guardando bracket:', err));
+    } else {
+      bracketsLocalCache[gameId] = brackets[gameId];
+      saveBracketsLocal(bracketsLocalCache);
+    }
+  }
+  function pushHistory(gameId){
+    const snap = JSON.stringify(brackets[gameId]);
+    brackets[gameId].history = (brackets[gameId].history || []).concat([snap]).slice(-15);
+  }
+  function undoBracket(gameId){
+    const hist = brackets[gameId].history || [];
+    if (!hist.length) return;
+    const prev = JSON.parse(hist[hist.length - 1]);
+    prev.history = hist.slice(0, -1);
+    brackets[gameId] = prev;
+    saveBracket(gameId);
+    renderBracketView();
+  }
+
+  function shufflePairs(players){
+    const arr = [...players];
+    for (let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    const pairs = [];
+    for (let i = 0; i < arr.length; i += 2) pairs.push({ a: arr[i], b: arr[i+1], winner: null, advancer: null });
+    return pairs;
+  }
+  function getAdvancer(m){ return m.advancer || null; }
+
+  function nonQualifiers(st){
+    if (!st.groupA || !st.r2a) return [];
+    const groupAAdv = st.r2a.map(getAdvancer);
+    const groupALosers = st.groupA.filter(p => !groupAAdv.includes(p));
+    const groupBAdv = st.r2bFinal ? getAdvancer(st.r2bFinal) : null;
+    const groupBOut = (st.groupB || []).filter(p => p !== groupBAdv);
+    return [...groupALosers, ...groupBOut];
+  }
+
+  function advanceStage(gameId){
+    const st = brackets[gameId];
+
+    if (st.r1 && st.r1.every(m => getAdvancer(m)) && !st.r2a){
+      if (st.bestLoser === null) return; // falta que el organizador elija al mejor perdedor
+      const winners = st.r1.map(getAdvancer);
+      const losers = st.r1.map(m => (m.a === getAdvancer(m) ? m.b : m.a));
+      st.groupA = [...winners, st.bestLoser];
+      st.groupB = losers.filter(p => p !== st.bestLoser);
+      st.r2a = shufflePairs(st.groupA);
+      st.r2bSemis = shufflePairs(st.groupB);
+    }
+
+    if (st.r2a && st.r2a.every(m => getAdvancer(m)) && st.r2bSemis && st.r2bSemis.every(m => getAdvancer(m)) && !st.r2bFinal){
+      const semiWinners = st.r2bSemis.map(getAdvancer);
+      st.r2bFinal = { a: semiWinners[0], b: semiWinners[1], winner: null, advancer: null };
+    }
+
+    if (st.r2bFinal && getAdvancer(st.r2bFinal) && !st.r3semis){
+      const qualifiers = [...st.r2a.map(getAdvancer), getAdvancer(st.r2bFinal)];
+      st.r3semis = [
+        { a: qualifiers[0], b: qualifiers[2], winner: null, advancer: null },
+        { a: qualifiers[1], b: qualifiers[3], winner: null, advancer: null }
+      ];
+    }
+
+    if (st.r3semis && st.r3semis.every(m => getAdvancer(m)) && !st.r3final){
+      const w = st.r3semis.map(getAdvancer);
+      st.r3final = { a: w[0], b: w[1], winner: null, advancer: null };
+      st.r3third = {
+        a: st.r3semis[0].a === w[0] ? st.r3semis[0].b : st.r3semis[0].a,
+        b: st.r3semis[1].a === w[1] ? st.r3semis[1].b : st.r3semis[1].a,
+        winner: null, advancer: null
+      };
+    }
+
+    if (st.r3final && getAdvancer(st.r3final) && st.r3third && getAdvancer(st.r3third)){
+      st.stage = 'ranked';
+    }
+  }
+
+  function resolveMatch(gameId, roundKey, i, who){
+    pushHistory(gameId);
+    const st = brackets[gameId];
+    const target = i === -1 ? st[roundKey] : st[roundKey][i];
+    target.winner = who;
+    if (who !== 'draw') target.advancer = who;
+    advanceStage(gameId);
+    saveBracket(gameId);
+    renderBracketView();
+  }
+
+  function computeFinalPoints(st){
+    const pts = {};
+    const finalW = getAdvancer(st.r3final);
+    pts[finalW] = 5;
+    pts[st.r3final.a === finalW ? st.r3final.b : st.r3final.a] = 4;
+    const thirdW = getAdvancer(st.r3third);
+    pts[thirdW] = 3;
+    pts[st.r3third.a === thirdW ? st.r3third.b : st.r3third.a] = 2;
+    if (st.place56.p5) pts[st.place56.p5] = 1;
+    if (st.place56.p6) pts[st.place56.p6] = 1;
+    return pts;
+  }
+
+  function partialPoints(st){
+    const p = {};
+    PLAYERS.forEach(pl => p[pl] = 0);
+    [st.r1, st.r2a, st.r2bSemis].forEach(arr => {
+      (arr || []).forEach(m => {
+        if (!m.winner) return;
+        if (m.winner === 'draw'){ p[m.a] += 1; p[m.b] += 1; }
+        else { p[m.winner] += 3; }
+      });
+    });
+    return p;
+  }
+
+  function matchRowHTML(gameId, roundKey, idx, m, hasDraw){
+    const advancer = getAdvancer(m);
+    const decided = !!advancer;
+    const needsTie = m.winner === 'draw' && !m.advancer;
+    const idxAttr = idx === -1 ? 'x' : idx;
+    let inner;
+    if (!decided && !needsTie){
+      inner = `<div class="match-actions">
+        <button data-act="win" data-round="${roundKey}" data-idx="${idxAttr}" data-who="${m.a}">Ganó ${m.a}</button>
+        ${hasDraw ? `<button class="draw-btn" data-act="win" data-round="${roundKey}" data-idx="${idxAttr}" data-who="draw">Empate</button>` : ''}
+        <button data-act="win" data-round="${roundKey}" data-idx="${idxAttr}" data-who="${m.b}">Ganó ${m.b}</button>
+        <button data-act="vs" data-round="${roundKey}" data-idx="${idxAttr}">Ver presentación</button>
+      </div>`;
+    } else if (needsTie){
+      inner = `<div class="tie-alert">Empate — elegí quién avanza:
+        <div class="match-actions">
+          <button data-act="tie" data-round="${roundKey}" data-idx="${idxAttr}" data-who="${m.a}">${m.a}</button>
+          <button data-act="tie" data-round="${roundKey}" data-idx="${idxAttr}" data-who="${m.b}">${m.b}</button>
+        </div></div>`;
+    } else {
+      inner = `<span class="match-tag">Avanza</span>`;
+    }
+    return `<div class="match-row ${decided ? 'decided' : ''}">
+      <div class="match-players">
+        <span class="${advancer === m.a ? 'winner-name' : ''}"><b>${m.a}</b></span>
+        <span class="match-vs-mini">VS</span>
+        <span class="${advancer === m.b ? 'winner-name' : ''}"><b>${m.b}</b></span>
+      </div>
+      ${inner}
+    </div>`;
+  }
+
+  // ---- VS overlay a pantalla completa ----
+  const vsOverlay = document.getElementById('vsOverlay');
+  const vsFigLeft = document.getElementById('vsFigLeft');
+  const vsFigRight = document.getElementById('vsFigRight');
+  const vsNameLeft = document.getElementById('vsNameLeft');
+  const vsNameRight = document.getElementById('vsNameRight');
+  const vsPickRow = document.getElementById('vsPickRow');
+
+  function openVsOverlay(gameId, roundKey, idxAttr, a, b){
+    const colorA = PLAYER_COLORS[a] || 'var(--red)';
+    const colorB = PLAYER_COLORS[b] || 'var(--cyan)';
+    vsOverlay.style.setProperty('--p1c', colorA);
+    vsOverlay.style.setProperty('--p2c', colorB);
+    vsFigLeft.style.setProperty('--figc', colorA);
+    vsFigRight.style.setProperty('--figc', colorB);
+    vsFigLeft.innerHTML = PLAYER_SILHOUETTES[a] ? `<img src="${PLAYER_SILHOUETTES[a]}" onerror="this.remove()">` : '';
+    vsFigRight.innerHTML = PLAYER_SILHOUETTES[b] ? `<img src="${PLAYER_SILHOUETTES[b]}" onerror="this.remove()">` : '';
+    vsNameLeft.textContent = a;
+    vsNameRight.textContent = b;
+    const gameDef = REDRANK_GAMES.find(g => g.id === gameId);
+    vsPickRow.innerHTML = `
+      <button data-act="win" data-round="${roundKey}" data-idx="${idxAttr}" data-who="${a}">${a}</button>
+      ${gameDef.hasDraw ? `<button class="draw" data-act="win" data-round="${roundKey}" data-idx="${idxAttr}" data-who="draw">Empate</button>` : ''}
+      <button data-act="win" data-round="${roundKey}" data-idx="${idxAttr}" data-who="${b}">${b}</button>
+    `;
+    vsOverlay.dataset.game = gameId;
+    vsOverlay.classList.add('open');
+    requestAnimationFrame(() => requestAnimationFrame(() => vsOverlay.classList.add('reveal')));
+  }
+  function closeVsOverlay(){ vsOverlay.classList.remove('open', 'reveal'); }
+  document.getElementById('vsSkip').addEventListener('click', closeVsOverlay);
+  vsPickRow.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-act="win"]');
+    if (!btn) return;
+    const idxAttr = btn.dataset.idx;
+    resolveMatch(vsOverlay.dataset.game, btn.dataset.round, idxAttr === 'x' ? -1 : Number(idxAttr), btn.dataset.who);
+    closeVsOverlay();
+  });
+
+  // ---- render principal del bracket ----
+  const bracketViewEl = document.getElementById('bracketView');
+
+  function renderBracketView(){
+    if (!currentBracketGame){ bracketViewEl.innerHTML = '<p class="placeholder-note">Elegí un juego arriba para ver su bracket.</p>'; return; }
+    const gameId = currentBracketGame;
+    const gameDef = REDRANK_GAMES.find(g => g.id === gameId);
+    ensureBracket(gameId);
+    const st = brackets[gameId];
+
+    if (!st.r1){
+      bracketViewEl.innerHTML = `<div class="placeholder-note">
+        Todavía no se sorteó la Ronda 1 de ${gameDef.label}.
+        ${organizerMode ? `<div style="margin-top:1rem;"><button class="btn" data-act="draw1">Realizar sorteo</button></div>` : '<br>Esperá a que el organizador haga el sorteo.'}
+      </div>`;
+      return;
+    }
+
+    let mainHTML = `<div class="bracket-round-card"><div class="bracket-round-title">Ronda 1 — Cruces iniciales</div>`;
+    mainHTML += st.r1.map((m,i) => matchRowHTML(gameId,'r1',i,m,gameDef.hasDraw)).join('');
+    mainHTML += `</div>`;
+
+    if (st.r1.every(m => getAdvancer(m)) && st.bestLoser === null){
+      const losers = st.r1.map(m => (m.a === getAdvancer(m) ? m.b : m.a));
+      mainHTML += `<div class="tie-alert">Elegí al <strong>mejor perdedor</strong> de la Ronda 1 (se suma al Grupo Ganadores):
+        <div class="match-actions">${losers.map(p => `<button data-act="bestloser" data-who="${p}">${p}</button>`).join('')}</div></div>`;
+    }
+
+    if (st.r2a){
+      mainHTML += `<div class="bracket-round-card"><div class="bracket-round-title">Ronda 2 — Grupo Ganadores</div>`;
+      mainHTML += st.r2a.map((m,i) => matchRowHTML(gameId,'r2a',i,m,gameDef.hasDraw)).join('');
+      mainHTML += `</div>`;
+      mainHTML += `<div class="bracket-round-card"><div class="bracket-round-title">Ronda 2 — Grupo Perdedores (semis)</div>`;
+      mainHTML += st.r2bSemis.map((m,i) => matchRowHTML(gameId,'r2bSemis',i,m,gameDef.hasDraw)).join('');
+      mainHTML += `</div>`;
+    }
+    if (st.r2bFinal){
+      mainHTML += `<div class="bracket-round-card"><div class="bracket-round-title">Ronda 2 — Definición Grupo Perdedores</div>`;
+      mainHTML += matchRowHTML(gameId,'r2bFinal',-1,st.r2bFinal,gameDef.hasDraw);
+      mainHTML += `</div>`;
+    }
+    if (st.r3semis){
+      mainHTML += `<div class="bracket-round-card"><div class="bracket-round-title">Ronda 3 — Semifinales</div>`;
+      mainHTML += st.r3semis.map((m,i) => matchRowHTML(gameId,'r3semis',i,m,gameDef.hasDraw)).join('');
+      mainHTML += `</div>`;
+    }
+    if (st.r3final){
+      mainHTML += `<div class="bracket-round-card"><div class="bracket-round-title">Final</div>`;
+      mainHTML += matchRowHTML(gameId,'r3final',-1,st.r3final,gameDef.hasDraw);
+      mainHTML += `</div><div class="bracket-round-card"><div class="bracket-round-title">Tercer puesto</div>`;
+      mainHTML += matchRowHTML(gameId,'r3third',-1,st.r3third,gameDef.hasDraw);
+      mainHTML += `</div>`;
+    }
+    if (st.stage === 'ranked'){
+      const pts = computeFinalPoints(st);
+      mainHTML += `<div class="bracket-round-card"><div class="bracket-round-title">Resultado final</div>
+        <div class="final-ranking">${Object.entries(pts).sort((a,b) => b[1]-a[1]).map(([p,v]) => `<div class="fr-chip"><b>${p}</b><span>${v} pts</span></div>`).join('')}</div>
+        ${organizerMode ? `<button class="btn" data-act="apply" ${st.applied ? 'disabled' : ''}>${st.applied ? 'Puntaje ya aplicado ✓' : 'Aplicar puntaje a la Tabla'}</button>` : ''}
+      </div>`;
+    }
+
+    const partial = partialPoints(st);
+    let sideHTML = `<div class="side-panel"><h4>Puntos de ronda (clasificación)</h4>`;
+    sideHTML += [...PLAYERS].sort((a,b) => partial[b]-partial[a]).map(p => `<div class="standing-row"><span>${p}</span><b>${partial[p]}</b></div>`).join('');
+    sideHTML += `</div>`;
+
+    const nq = nonQualifiers(st);
+    if (nq.length && (st.place56.p5 === null || st.place56.p6 === null)){
+      const pending = nq.filter(p => p !== st.place56.p5 && p !== st.place56.p6);
+      sideHTML += `<div class="side-panel"><h4>Asignar 5to y 6to puesto</h4>${pending.map(p => `
+        <div style="display:flex;gap:.4rem;align-items:center;margin-bottom:.5rem;">
+          <span style="flex:1;font-family:var(--font-sub);">${p}</span>
+          ${st.place56.p5 === null ? `<button data-act="place5" data-who="${p}" style="font-family:var(--font-mono);font-size:.68rem;padding:.35rem .6rem;background:var(--bg);border:1px solid var(--line);color:var(--white);cursor:pointer;">5to</button>` : ''}
+          ${st.place56.p6 === null ? `<button data-act="place6" data-who="${p}" style="font-family:var(--font-mono);font-size:.68rem;padding:.35rem .6rem;background:var(--bg);border:1px solid var(--line);color:var(--white);cursor:pointer;">6to</button>` : ''}
+        </div>`).join('')}</div>`;
+    }
+
+    if (organizerMode){
+      sideHTML += `<div class="side-panel side-actions">
+        <button class="btn btn--ghost" data-act="undo" ${(!st.history || !st.history.length) ? 'disabled' : ''}>Deshacer último cambio</button>
+        <button class="btn btn--ghost" data-act="reset">Reiniciar bracket</button>
+      </div>`;
+    }
+
+    bracketViewEl.innerHTML = `<div class="bracket-layout"><div class="bracket-main">${mainHTML}</div><div class="bracket-side">${sideHTML}</div></div>`;
+  }
+
+  bracketViewEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-act]');
+    if (!btn) return;
+    const gameId = currentBracketGame;
+    const { act, round, who } = btn.dataset;
+    const idxAttr = btn.dataset.idx;
+    const i = idxAttr === 'x' ? -1 : Number(idxAttr);
+
+    if (act === 'draw1'){
+      if (!organizerMode) return;
+      pushHistory(gameId);
+      brackets[gameId].r1 = shufflePairs(PLAYERS);
+      saveBracket(gameId); renderBracketView();
+    } else if (act === 'win'){
+      if (!organizerMode) return;
+      resolveMatch(gameId, round, i, who);
+    } else if (act === 'vs'){
+      const st = brackets[gameId];
+      const m = i === -1 ? st[round] : st[round][i];
+      openVsOverlay(gameId, round, idxAttr, m.a, m.b);
+    } else if (act === 'tie'){
+      if (!organizerMode) return;
+      pushHistory(gameId);
+      const st = brackets[gameId];
+      const m = i === -1 ? st[round] : st[round][i];
+      m.advancer = who;
+      advanceStage(gameId);
+      saveBracket(gameId); renderBracketView();
+    } else if (act === 'bestloser'){
+      if (!organizerMode) return;
+      pushHistory(gameId);
+      brackets[gameId].bestLoser = who;
+      advanceStage(gameId);
+      saveBracket(gameId); renderBracketView();
+    } else if (act === 'place5'){
+      if (!organizerMode) return;
+      pushHistory(gameId);
+      brackets[gameId].place56.p5 = who;
+      saveBracket(gameId); renderBracketView();
+    } else if (act === 'place6'){
+      if (!organizerMode) return;
+      pushHistory(gameId);
+      brackets[gameId].place56.p6 = who;
+      saveBracket(gameId); renderBracketView();
+    } else if (act === 'apply'){
+      if (!organizerMode) return;
+      if (!confirm('¿Aplicar este puntaje a la Tabla general (3ra Edición)? Sobreescribe la columna de este juego para estos jugadores.')) return;
+      const pts = computeFinalPoints(brackets[gameId]);
+      const edScores = allScores['ed3'];
+      Object.keys(pts).forEach(p => { if (edScores[p]) edScores[p][gameId] = pts[p]; });
+      persistEdition('ed3');
+      if (currentEditionId === 'ed3') renderBody();
+      brackets[gameId].applied = true;
+      saveBracket(gameId); renderBracketView();
+    } else if (act === 'undo'){
+      if (!organizerMode) return;
+      undoBracket(gameId);
+    } else if (act === 'reset'){
+      if (!organizerMode) return;
+      if (!confirm('¿Reiniciar todo el bracket de este juego? Se pierde el progreso actual.')) return;
+      pushHistory(gameId);
+      const hist = brackets[gameId].history;
+      brackets[gameId] = emptyBracketState();
+      brackets[gameId].history = hist;
+      saveBracket(gameId); renderBracketView();
+    }
+  });
+
+  function renderBracketPicker(){
+    const el = document.getElementById('bracketPicker');
+    el.innerHTML =
+      REDRANK_GAMES.map(g => `<button class="bracket-pick-btn ${currentBracketGame === g.id ? 'active' : ''}" data-pick="${g.id}">${g.label}</button>`).join('') +
+      SOON_GAMES.map(g => `<button class="bracket-pick-btn" disabled>${g.label} · Próximamente</button>`).join('');
+  }
+  document.getElementById('bracketPicker').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-pick]');
+    if (!btn) return;
+    currentBracketGame = btn.dataset.pick;
+    ensureBracket(currentBracketGame);
+    renderBracketPicker();
+    renderBracketView();
+  });
+
+  renderBracketPicker();
+  renderBracketView();
 </script>
+  <!-- ================= VS OVERLAY ================= -->
+  <div class="vs-overlay" id="vsOverlay">
+    <div class="vs-bg-side vs-bg-left" id="vsBgLeft"></div>
+    <div class="vs-bg-side vs-bg-right" id="vsBgRight"></div>
+    <button class="vs-skip" id="vsSkip">SALTAR ▶</button>
+    <div class="vs-figure left" id="vsFigLeft"></div>
+    <div class="vs-figure right" id="vsFigRight"></div>
+    <div class="vs-name left" id="vsNameLeft"></div>
+    <div class="vs-name right" id="vsNameRight"></div>
+    <div class="vs-center">VS</div>
+    <div class="vs-pick-row" id="vsPickRow"></div>
+  </div>
 
-
-
-</body></html>
+</body>
+</html>
