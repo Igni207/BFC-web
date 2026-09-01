@@ -46,7 +46,7 @@
   const BRACKET_COLLECTION = 'bfc_brackets';
   const BRACKET_LOCAL_KEY = 'bfc_brackets_local';
 
-  function emptyBracketState(type){
+  function emptyBracketState(type, gameId){
     if (type === 'haxball'){
       return {
         stage:'repechaje',
@@ -67,8 +67,11 @@
         applied:false, history:[]
       };
     }
+    const preset = gameId && PRESET_DRAWS[gameId];
     return {
-      stage:'r1', r1:null, bestLoser:null, groupA:null, groupB:null,
+      stage:'r1',
+      r1: preset ? preset.map(([a,b]) => ({ a, b, winner:null, advancer:null })) : null,
+      bestLoser:null, groupA:null, groupB:null,
       r2a:null, r2bSemis:null, r2bFinal:null,
       place56:{ p5:null, p6:null },
       r3semis:null, r3final:null, r3third:null,
@@ -88,14 +91,14 @@
     if (!brackets[gameId]){
       brackets[gameId] = bracketsLocalCache[gameId]
         ? JSON.parse(JSON.stringify(bracketsLocalCache[gameId]))
-        : emptyBracketState(bracketType(gameId));
+        : emptyBracketState(bracketType(gameId), gameId);
     }
   }
 
   if (firebaseReady){
     BRACKET_GAMES.forEach(g => {
       db.collection(BRACKET_COLLECTION).doc(g.id).onSnapshot(snap => {
-        brackets[g.id] = snap.exists ? snap.data() : emptyBracketState(g.type);
+        brackets[g.id] = snap.exists ? snap.data() : emptyBracketState(g.type, g.id);
         if (currentBracketGame === g.id) renderBracketView();
       }, err => console.error('Error escuchando bracket de', g.id, err));
     });
@@ -620,7 +623,8 @@
     }
 
     const partial = partialPoints(st);
-    let sideHTML = `<div class="side-panel"><h4>Tabla de este juego</h4>`;
+    let sideHTML = `<div class="side-panel"><h4>Tabla — ${gameDef.label}</h4>
+      <p style="font-family:var(--font-mono);font-size:.62rem;color:var(--dim);margin:-.4rem 0 .6rem;">3 pts victoria · 1 pt empate · 0 derrota</p>`;
     if (gameId === 'fc26'){
       const gd = goalDifference([st.r1, st.r2a, st.r2bSemis, [st.r2bFinal], st.r3semis, [st.r3final], [st.r3third]]);
       sideHTML += [...PLAYERS].sort((a,b) => partial[b] - partial[a] || gd[b] - gd[a])
@@ -807,7 +811,7 @@
       if (!confirm('¿Reiniciar todo el bracket de este juego? Se pierde el progreso actual.')) return;
       pushHistory(gameId);
       const hist = brackets[gameId].history;
-      brackets[gameId] = emptyBracketState(bracketType(gameId));
+      brackets[gameId] = emptyBracketState(bracketType(gameId), gameId);
       brackets[gameId].history = hist;
       saveBracket(gameId); renderBracketView();
     }
