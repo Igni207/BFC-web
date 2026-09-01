@@ -23,11 +23,22 @@
 
   // Colores de cada jugador para el fondo/iluminación del VS.
   const PLAYER_COLORS = {
-    Kacha:'#f2efe6', Mena:'#b026ff', Rojo:'#e8352b', Milanesa:'#2e6bf0', Croc:'#3fd1e0',
-    Sosa:'#f2a83c', Chata:'#141c5c', Gonzi:'#39ff6a', Santy:'#b98cf2', Fexx:'#a8552b'
+    Kacha:'#f2efe6', Mena:'#ac1bff', Rojo:'#f72015', Milanesa:'#2e6bf0', Croc:'#3fd1e0',
+    Sosa:'#ffee00', Chata:'#141c5c', Gonzi:'#39ff6a', Santy:'#b98cf2', Fexx:'#a8552b'
   };
   // Cuando tengas las siluetas PNG (sin fondo), agregalas acá, ej: Kacha:'assets/siluetas/kacha.png'
-  const PLAYER_SILHOUETTES = {};
+  const PLAYER_SILHOUETTES = {
+    'Rojo': 'assets/siluetas/rojo.png',
+    'Milanesa': 'assets/siluetas/milanesa.png',
+    'Croc': 'assets/siluetas/croc.png',
+    'Mena': 'assets/siluetass/mena.png',
+    'Kacha': 'assets/siluetas/kacha.png',
+    'Fexx': 'assets/siluetas/fexx.png',
+    'Santy': 'assets/siluetas/santy.png',
+    'Sosa': 'assets/siluetas/sosa.png',
+    'Chata': 'assets/siluetas/chata.png',
+    'Gonzi': 'assets/siluetas/gonzi.png'
+  };
 
   // Sorteos ya realizados por el organizador (Ronda 1). Si un juego tiene un
   // preset acá, "Realizar sorteo" usa este orden en vez de uno al azar.

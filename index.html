@@ -36,6 +36,12 @@
     <button class="intro-skip" id="skipIntro">SALTAR ▶</button>
   </div>
 
+  <!-- ================= MÚSICA DE FONDO ================= -->
+  <audio id="bgMusic" loop preload="none">
+    <source src="assets/music/theme.mp3" type="audio/mpeg">
+  </audio>
+  <button class="music-toggle" id="musicToggle" title="Música de fondo">🔇</button>
+
   <!-- ================= STICKY NAV ================= -->
   <nav class="topnav" id="topnav">
     <a href="#jugadores">Jugadores</a>
@@ -59,7 +65,7 @@
           <div class="ring-title-stage">
             <p class="ring-eyebrow">Based Fighting Cup</p>
             <h1 class="ring-title">TERCERA<span>EDICIÓN</span></h1>
-            <p class="ring-sub">El torneo de lucha entre amigos vuelve a subir al ring.</p>
+            <p class="ring-sub">El torneo vuelve para subir al ring.</p>
             <div class="scroll-cue">TOCÁ EL RING</div>
           </div>
 
@@ -102,7 +108,7 @@
       <div class="section-head">
         <p class="section-eyebrow">BFC3 · Tercera Edición</p>
         <h2 class="section-title">Brackets</h2>
-        <p class="section-desc">Sorteo, cruces y resultados en vivo de cada juego. Solo el organizador puede cargar resultados — el resto ve todo actualizado al instante.</p>
+        <p class="section-desc">Sorteo, cruces y resultados en vivo de cada juego. Solo el organizador puede cargar resultados.</p>
       </div>
       <div class="bracket-picker" id="bracketPicker"></div>
       <div id="bracketView"></div>
@@ -122,12 +128,11 @@
       <div class="section-head">
         <p class="section-eyebrow">Tabla general</p>
         <h2 class="section-title">Tablas</h2>
-        <p class="section-desc">Puntaje acumulado de todo el torneo, incluyendo HaxBall.</p>
+        <p class="section-desc">Puntaje acumulado de todo el torneo.</p>
       </div>
 
       <div class="sync-banner" id="syncBanner">
         ⚠️ Firebase no está conectado todavía — la tabla se está guardando solo en este navegador.
-        Completá <code>FIREBASE_CONFIG</code> en el HTML para que se sincronice entre todos. Ver instrucciones del organizador.
       </div>
       <p class="sync-ok" id="syncStatus"></p>
 
@@ -182,6 +187,7 @@
 <script src="js/ui.js"></script>
 <script src="js/tablas.js"></script>
 <script src="js/brackets.js"></script>
+<script src="js/music.js"></script>
 
 </body>
 </html>
