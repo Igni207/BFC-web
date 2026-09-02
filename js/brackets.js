@@ -31,7 +31,7 @@
     'Rojo': 'assets/siluetas/rojo.png',
     'Milanesa': 'assets/siluetas/milanesa.png',
     'Croc': 'assets/siluetas/croc.png',
-    'Mena': 'assets/siluetass/mena.png',
+    'Mena': 'assets/siluetas/mena.png',
     'Kacha': 'assets/siluetas/kacha.png',
     'Fexx': 'assets/siluetas/fexx.png',
     'Santy': 'assets/siluetas/santy.png',
